@@ -1,17 +1,19 @@
 
-class EventDispatcher {
+export class EventDispatcher {
     constructor() {
         this.events = {};
     }
 
-    attach(type, listener) {
+    attach(type, callback) {
         if (this.events[type] === undefined) {
             this.events[type] = [];
         }
-        this.events[type].push(listener);
+        this.events[type].push(callback);
     }
 
     notify(type, arg) {
-        this.events[type].forEach(listener => listener(arg));
+        if (this.events[type]) {
+            this.events[type].forEach(callback => callback(arg));
+        }
     };
 };
