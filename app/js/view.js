@@ -1,10 +1,13 @@
 
-class View {
+import { EventDispatcher } from "./eventDispatcher";
+
+class View extends EventDispatcher {
     constructor() {
+        super();
+
         this.form   = document.getElementById('todo-control');
-        this.input  = document.getElementById('task-input');
-        this.button = document.getElementById('task-add');
         this.list   = document.getElementById('todo-list');
+        this.input  = document.getElementById('task-input')
 
         this.form.addEventListener('submit', this.handleAdd.bind(this));
     }
@@ -107,10 +110,11 @@ class View {
         const id            = listItem.getAttribute('data-id');
         const completed     = target.completed;
 
-        // update model
+        this.notify('toggle', { id, completed });
     }
 
     handleEdit({ target }) {
+        const listItem      = target.parentNode;
         const id            = listItem.getAttribute('data-id');
         const label         = listItem.querySelector('.title');
         const input         = listItem.querySelector('.text-field');
@@ -119,7 +123,7 @@ class View {
         const isEditing     = listItem.classList.contains('editing');
 
         if (isEditing) {
-            // update model
+            this.notify('edit', { id, title });
         } else {
             input.value = label.textContent;
             editButton.textContent = 'Save';
@@ -129,17 +133,19 @@ class View {
 
     handleDelete({ target }) {
         const listItem      = target.parentNode;
+        const id            = listItem.getAttribute('data-id');
+
+        this.notify('delete', id);
     }
 
     handleAdd(event) {
         event.preventDefault();
 
-        if ( ! this.input.value) {
-            return alert('Please, enter the task');
-        }
+        if ( ! this.input.value) return alert('Please, enter the task');
 
         const value = this.input.value;
 
+        this.notify('add', value);
         // add item to model
     }
 };
