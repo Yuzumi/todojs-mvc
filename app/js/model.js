@@ -10,12 +10,16 @@ class Model {
 
     addItem(item) {
         this.state.push(item);
+
+        return item;
     }
 
     updateItem(id, data) {
         const item = this.getItem(id);
 
         Object.keys(data).forEach(key => item[key] = data[key]);
+
+        return item;
     }
 
     removeItem(id) {
