@@ -8,6 +8,8 @@ class Controller {
         view.attach('edit'  , this.editTodo.bind(this));
         view.attach('toggle', this.toggleTodo.bind(this));
         view.attach('delete', this.deleteTodo.bind(this));
+
+        view.display(model.storage);
     }
 
     addTodo(title) {
@@ -15,13 +17,12 @@ class Controller {
             id: Date.now(),
             title: title,
             completed: false
-
         });
 
         this.view.addItem(todo);
     }
 
-    editTodo({ id, title}) {
+    editTodo({ id, title }) {
         const todo = this.model.updateItem(id, { title });
 
         this.view.editItem(todo);
@@ -35,8 +36,6 @@ class Controller {
 
     deleteTodo(id) {
         this.model.deleteItem(id);
-        this.view.removeItem(id);
+        this.view.deleteItem(id);
     }
 };
-
-export default Controller;

@@ -1,27 +1,37 @@
 
-import { EventDispatcher } from "./eventDispatcher";
-
 class View extends EventDispatcher {
     constructor() {
         super();
 
-        this.form   = document.getElementById('todo-control');
+        this.form   = document.getElementById('todo-form');
         this.list   = document.getElementById('todo-list');
-        this.input  = document.getElementById('task-input')
+        this.input  = document.getElementById('todo-input');
 
         this.form.addEventListener('submit', this.handleAdd.bind(this));
     }
 
+    findListItem(id) {
+        return this.list.querySelector(`[data-id="${id}"]`)
+    }
+
+    display(todos) {
+        todos.forEach(todo => {
+            const listItem = this.createListItem(todo);
+
+            this.list.appendChild(listItem);
+        });
+    }
+
     addItem(todo) {
         const listItem = this.createListItem(todo);
-
+        
         this.input.value = '';
         this.list.appendChild(listItem);
     }
 
     toggleItem(todo) {
         const listItem = this.findListItem(todo.id);
-        const checkbox = listItem.querySelector('.checkbox');
+        const checkbox = listItem.querySelector('input.checkbox');
 
         checkbox.checked = todo.completed;
 
@@ -30,24 +40,19 @@ class View extends EventDispatcher {
             : listItem.classList.remove('completed');
     }
 
-    findListItem(id) {
-        return this.list.querySelector(`[data-id="${id}]"`);
-    }
-
     editItem(todo) {
-        const listItem = this.findListItem(todo.id);
-        const label = listItem.querySelector('.title');
-        const input = listItem.querySelector('.text-field');
-        const editButton = listItem.querySelector('.edit');
+        const listItem      = this.findListItem(todo.id);
+        const label         = listItem.querySelector('.title');
+        const input         = listItem.querySelector('.text-field');
+        const editButton    = listItem.querySelector('button.edit');
 
-        label.textContent = todo.title;
-        editButton.textContent = 'Change';
+        label.textContent       = todo.title;
+        editButton.textContent  = 'Edit';
         listItem.classList.remove('editing');
     }
 
-    removeItem(id) {
+    deleteItem(id) {
         const listItem = this.findListItem(id);
-
         this.list.removeChild(listItem);
     }
 
@@ -82,7 +87,7 @@ class View extends EventDispatcher {
         })
 
         const label         = this.createElement('label', { className: 'title' }, todo.title);
-        const editButton    = this.createElement('button', { className: 'edit' }, 'Change');
+        const editButton    = this.createElement('button', { className: 'edit' }, 'Edit');
         const deleteButton  = this.createElement('button', { className: 'delete' }, 'Delete');
 
         const item          = this.createElement('li', { 
@@ -94,9 +99,9 @@ class View extends EventDispatcher {
     }
 
     addEventListeners(item) {
-        const checkbox      = listItem.querySelector('.checkbox');
-        const editButton    = listItem.querySelector('.edit');
-        const deleteButton  = listItem.querySelector('.delete');
+        const checkbox      = item.querySelector('.checkbox');
+        const editButton    = item.querySelector('button.edit');
+        const deleteButton  = item.querySelector('button.delete');
 
         checkbox.addEventListener('change', this.handleToggle.bind(this));
         editButton.addEventListener('click', this.handleEdit.bind(this));
@@ -108,7 +113,7 @@ class View extends EventDispatcher {
     handleToggle({ target }) {
         const listItem      = target.parentNode;
         const id            = listItem.getAttribute('data-id');
-        const completed     = target.completed;
+        const completed     = target.checked;
 
         this.notify('toggle', { id, completed });
     }
@@ -118,7 +123,7 @@ class View extends EventDispatcher {
         const id            = listItem.getAttribute('data-id');
         const label         = listItem.querySelector('.title');
         const input         = listItem.querySelector('.text-field');
-        const editButton    = listItem.querySelector('.edit');
+        const editButton    = listItem.querySelector('button.edit');
         const title         = input.value;
         const isEditing     = listItem.classList.contains('editing');
 
@@ -132,10 +137,9 @@ class View extends EventDispatcher {
     }
 
     handleDelete({ target }) {
-        const listItem      = target.parentNode;
-        const id            = listItem.getAttribute('data-id');
-
-        this.notify('delete', id);
+        const listItem = target.parentNode;
+        
+        this.notify('delete', listItem.getAttribute('data-id'));
     }
 
     handleAdd(event) {
@@ -146,8 +150,5 @@ class View extends EventDispatcher {
         const value = this.input.value;
 
         this.notify('add', value);
-        // add item to model
     }
 };
-
-export default View;

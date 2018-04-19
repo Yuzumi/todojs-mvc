@@ -1,5 +1,5 @@
 
-export class EventDispatcher {
+class EventDispatcher {
     constructor() {
         this.events = {};
     }

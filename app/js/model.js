@@ -1,15 +1,18 @@
 
-class Model {
-    constructor(state = []) {
-        this.state = state;
+class Model extends EventDispatcher {
+    constructor(storage = []) {
+        super();
+
+        this.storage = storage;
     }
 
     getItem(id) {
-        return this.state.find(item => item.id == id);
+        return this.storage.find(item => item.id == id);
     }
 
     addItem(item) {
-        this.state.push(item);
+        this.storage.push(item);
+        this.notify('change', this.storage);
 
         return item;
     }
@@ -19,16 +22,17 @@ class Model {
 
         Object.keys(data).forEach(key => item[key] = data[key]);
 
+        this.notify('change', this.storage);
+
         return item;
     }
 
-    removeItem(id) {
-        const index = this.state.findIndex(item => item.id == id);
+    deleteItem(id) {
+        const index = this.storage.findIndex(item => item.id == id);
         
         if (index > -1) {
-            this.state.splice(index , 1);
+            this.storage.splice(index , 1);
+            this.notify('change', this.storage);
         }
     }
 };
-
-export default Model;
