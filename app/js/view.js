@@ -145,7 +145,7 @@ class View extends EventDispatcher {
     handleAdd(event) {
         event.preventDefault();
 
-        if ( ! this.input.value) return alert('Please, enter the task');
+        if ( ! this.input.value) return alert('Please, enter a task');
 
         const value = this.input.value;
 

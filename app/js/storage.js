@@ -1,13 +1,13 @@
 
 class Storage {
-    static save(data) {
+    static save(data, id) {
         const string = JSON.stringify(data);
 
-        localStorage.setItem('todos', string);
+        localStorage.setItem(id, string);
     }
 
-    static load() {
-        const string    = localStorage.getItem('todos');
+    static load(id) {
+        const string    = localStorage.getItem(id);
         const data      = JSON.parse(string);
 
         return data;

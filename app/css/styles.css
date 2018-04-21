@@ -1,16 +1,12 @@
 
 @import "./_reset.css";
 
-body {
-    background-color: #fafafa;
-    color: #757575;
-}
-
 /*
     Variables
 */
 :root {
-    --app-color: crimson; 
+    --app-color: #0095dd;
+    --app-transition: .3s linear;
 }
 
 /*
@@ -32,88 +28,126 @@ body {
     */
     #todo-caption {
         display: flex;
-        align-items: center;
         justify-content: center;
 
         padding: 1rem;
         color: #fff;
         background-color: var(--app-color);
-        text-align: center;
         text-transform: uppercase;
     }
 
     /*
         List
     */
-
-    /*
-        Control
-    */
-    #todo-control {
+    .todo-item {
         display: flex;
+        align-items: center;
 
-        background-color: #fafafa;
+        border-top: 1px solid rgba(0,0,0,.1);
+        background-color: #fff;
+        color: #555;
         padding: 1rem;
     }
 
-    #task-input,
-    #task-add {
-        outline: none;
-        font-size: 1rem;
-        color: #757575;
-        transition: all .3s linear;
+    .todo-item .checkbox {
+        margin-right: 1rem;
+        height: 1.2rem;
+        width: 1.2rem;
     }
 
-    #task-input {
+    .todo-item .title,
+    .todo-item .text-field {
+        margin-right: auto;
+    }
+
+    .todo-item .text-field {
+        display: none;
+    }
+
+    .todo-item.completed * {
+        color: lightgray;
+    }
+
+    .todo-item.completed .title {
+        text-decoration: line-through;
+    }
+
+    .todo-item.editing .checkbox,
+    .todo-item.editing .title {
+        display: none;
+    }
+
+    .todo-item.editing .text-field {
+        display: block;
+        flex: 1;
+        margin-right: 1rem;
+    }
+
+    .todo-item button,
+    .todo-item .checkbox {
+        opacity: 0;
+    }
+
+    .todo-item:hover button,
+    .todo-item:hover .checkbox {
+        opacity: 1;
+    }
+
+    /*
+        Form
+    */
+    #todo-form {
+        display: flex;
+
+        background-color: #fafafa;
+        border-top: 1px solid rgba(0,0,0,.1);
+        padding: 1rem;
+    }
+
+    #todo-input {
         flex: 1;
     }
 
-    #task-input:focus {
-        border: 2px solid var(--app-color);
-    }
-
-    #task-add {
+    #todo-button {
         margin-left: 1rem;
-        font-weight: 700;
-    }
-
-    #task-add:hover {
-        background-color: var(--app-color);
-        color: #fff;
     }
 
 /*
-    Buttons
+    Buttons & Inputs
 */
+input,
 button {
-    background: #bbb;
-    border: none;
-    min-width: 4rem;
-    padding: 0 1rem;
-    display: inline-block;
-    overflow: hidden;
-    cursor: pointer;
+    font-size: 1rem;
+    color: #aaa;
+    outline: none;
+    transition: var(--app-transition);
 }
 
-/*
-    Inputs
-*/
+button {
+    background: 0 0;
+    border: none;
+    min-width: 4rem;
+    text-transform: uppercase;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    padding: .5rem;
+}
+
+button + button {
+    margin-left: 1rem;
+}
+
+button:hover {
+    background-color: var(--app-color);
+    color: #fff;
+}
+
 input {
     padding: .5rem;
     border: 2px solid lightgray;
 }
 
-/*
-    Media Queries
-*/
-@media screen and (max-width: 425px) {
-    #todo-control {
-        flex-direction: column;
-    }
-
-    #task-add {
-        margin-left: 0;
-        margin-top: 1rem;
-        padding: .5rem;
-    }
+input:focus {
+    border: 2px solid var(--app-color);
 }

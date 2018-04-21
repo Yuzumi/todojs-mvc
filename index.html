@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Todo App</title>
+    <title>Todo-MVC App</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="./app/favicon/js-favicon.ico" type="image/x-icon">
@@ -13,7 +13,12 @@
     <link rel="stylesheet" href="./app/css/styles.css">
 
     <!-- script -->
-    <script src="./js/app.js" defer></script>
+    <script src="./app/js/storage.js"           defer></script>
+    <script src="./app/js/eventDispatcher.js"   defer></script>
+    <script src="./app/js/model.js"             defer></script>
+    <script src="./app/js/view.js"              defer></script>
+    <script src="./app/js/controller.js"        defer></script>
+    <script src="./app/js/app.js"               defer></script>
 </head>
 <body>
 
@@ -24,9 +29,9 @@
 
         <ul id="todo-list"></ul>
 
-        <form id="todo-control">
-            <input type="text" id="task-input">
-            <button type="submit" id="task-add">Add</button>
+        <form id="todo-form">
+            <input type="text" id="todo-input">
+            <button type="submit" id="todo-button">Add</button>
         </form>
     </main>
 
